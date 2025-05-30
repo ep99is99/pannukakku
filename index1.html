@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kaikki tilaukset - Kokin näkymä</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .order {
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-left: 8px solid #ffc107;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        background-color: #fffbe6;
+      }
+      .order.ready {
+        border-left-color: #2196f3;
+        background-color: #e3f2fd;
+      }
+      .order.delivered {
+        border-left-color: #4caf50;
+        background-color: #e8f5e9;
+      }
+      .order select {
+        margin-top: 8px;
+      }
+      .order button {
+        margin-top: 10px;
+        padding: 6px 12px;
+        background-color: #d32f2f;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .order button:hover {
+        background-color: #b71c1c;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Kaikki tilaukset</h1>
+    <div id="tilaustaulukko"></div>
+
+    <script>
+      function renderOrders() {
+        const container = document.getElementById("tilaustaulukko");
+        container.innerHTML = "";
+
+        let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+        if (orders.length === 0) {
+          container.innerHTML = "<p>Ei tilauksia.</p>";
+          return;
+        }
+
+        orders.forEach((order, index) => {
+          const orderEl = document.createElement("div");
+          orderEl.className = `order ${order.status}`;
+          orderEl.innerHTML = `
+          <p><strong>ID:</strong> ${order.id}</p>
+          <p><strong>Asiakas:</strong> ${order.customerName}</p>
+          <p><strong>Pannukakku:</strong> ${order.selectedPancake}</p>
+          <p><strong>Täytteet:</strong> ${order.toppings.join(", ")}</p>
+          <p><strong>Lisukkeet:</strong> ${order.extras.join(", ")}</p>
+          <p><strong>Toimitus:</strong> ${order.deliveryMethod}</p>
+          <p><strong>Hinta:</strong> ${order.totalPrice.toFixed(2)} €</p>
+          <label for="status-${index}"><strong>Tila:</strong></label>
+          <select id="status-${index}">
+            <option value="waiting" ${
+              order.status === "waiting" ? "selected" : ""
+            }>Odottaa</option>
+            <option value="ready" ${
+              order.status === "ready" ? "selected" : ""
+            }>Valmis</option>
+            <option value="delivered" ${
+              order.status === "delivered" ? "selected" : ""
+            }>Toimitettu</option>
+          </select>
+        `;
+
+          const statusSelect = orderEl.querySelector("select");
+          statusSelect.addEventListener("change", (e) => {
+            orders[index].status = e.target.value;
+            localStorage.setItem("orders", JSON.stringify(orders));
+            renderOrders();
+          });
+
+          if (order.status === "delivered") {
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Poista tilaus";
+            deleteButton.addEventListener("click", () => {
+              if (confirm("Haluatko varmasti poistaa tämän tilauksen?")) {
+                orders.splice(index, 1);
+                localStorage.setItem("orders", JSON.stringify(orders));
+                renderOrders();
+              }
+            });
+            orderEl.appendChild(deleteButton);
+          }
+
+          container.appendChild(orderEl);
+        });
+      }
+
+      renderOrders();
+    </script>
+  </body>
+</html>

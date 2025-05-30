@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pannukakun tilaus - Vaihe 3</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Pannukakun tilaus</h1>
+    <form id="tilauslomake">
+      <h2>Valitse pannukakun koko</h2>
+      <label><input type="radio" name="koko" data-price="5" /> Pieni (5€)</label
+      ><br />
+      <label
+        ><input type="radio" name="koko" data-price="8" /> Normaali (8€)</label
+      ><br />
+      <label
+        ><input type="radio" name="koko" data-price="10" /> Suuri (10€)</label
+      >
+
+      <h2>Valitse täytteet (1€ / kpl)</h2>
+      <label
+        ><input type="checkbox" name="tayte" value="mansikka" /> Mansikka</label
+      ><br />
+      <label
+        ><input type="checkbox" name="tayte" value="mustikka" /> Mustikka</label
+      ><br />
+      <label
+        ><input type="checkbox" name="tayte" value="banaani" /> Banaani</label
+      >
+
+      <h2>Valitse lisukkeet</h2>
+      <label
+        ><input type="checkbox" name="lisuke" value="hillo" data-price="2" />
+        Hillo (2€)</label
+      ><br />
+      <label
+        ><input
+          type="checkbox"
+          name="lisuke"
+          value="kermavaahto"
+          data-price="3"
+        />
+        Kermavaahto (3€)</label
+      ><br />
+      <label
+        ><input
+          type="checkbox"
+          name="lisuke"
+          value="vaahterasiirappi"
+          data-price="4"
+        />
+        Vaahterasiirappi (4€)</label
+      >
+
+      <h2>Toimitustapa</h2>
+      <label
+        ><input type="radio" name="toimitus" value="nouto" data-price="0" />
+        Nouto</label
+      ><br />
+      <label
+        ><input
+          type="radio"
+          name="toimitus"
+          value="kotiinkuljetus"
+          data-price="5"
+        />
+        Kotiinkuljetus (5€)</label
+      >
+
+      <h2>Asiakastiedot</h2>
+      <label for="nimi">Nimi:</label>
+      <input type="text" id="nimi" name="nimi" required /><br />
+
+      <h3>Hinta: <span id="hinta">0 €</span></h3>
+      <button type="button" id="naytaTilaus">Näytä tilaus</button>
+      <button type="button" id="vahvistaTilaus">Vahvista tilaus</button>
+    </form>
+
+    <div id="yhteenveto"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
